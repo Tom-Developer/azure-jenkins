@@ -1,9 +1,12 @@
-FROM        jenkins/jenkins:lts
+FROM        jenkins/jenkins:2.249.3-lts AS default
 
-ARG         VERSION=LTS
+ARG         VERSION=lts
 
-LABEL       version=0.1
+LABEL       version=0.2
 LABEL       maintainer="tom p."
+
+ENV         JAVA_OPTS="-Duser.timezone=America/Montreal"
+ENV         JENKINS_OPTS --sessionTimeout=360
 
 
 # test what commands are available
@@ -15,10 +18,10 @@ LABEL       maintainer="tom p."
 
 WORKDIR		/mnt/temp1/docker-data
 
-
 # allow this port number to connect to Jenkins in this container
 EXPOSE      8080
 
 USER        jenkins
+
 ENTRYPOINT  ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
 
